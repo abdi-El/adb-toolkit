@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import DevicesModal from "../atoms/DevicesModal";
-import ConnectionsButtons from "../molecules/ConnectionButtons";
+import SwitchDeviceButton from "../atoms/SwitchDeviceButton";
+import DevicesModal from "../molecules/DevicesModal";
+
 interface Props extends React.HTMLAttributes<HTMLDivElement> { }
 export default function ConnectionManager(props: Props) {
     const [open, setOpen] = useState(false);
@@ -20,16 +21,11 @@ export default function ConnectionManager(props: Props) {
         setOpen(false);
     }
     return <div {...props}>
-        <ConnectionsButtons connected={true}
-            connectButtonProps={{
-                loading: loading
+        <SwitchDeviceButton connected={false} style={{ marginLeft: 10 }}
+            onClick={() => {
+                setOpen(true)
             }}
-            swithButtonProps={{
-                onClick: () => {
-                    setOpen(true)
-                },
-                loading: loading
-            }}
+            loading={loading}
         />
         <DevicesModal loading={loading} open={open} onCancel={closeModal} onOk={closeModal} devices={devices} />
     </div>
