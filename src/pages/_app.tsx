@@ -1,3 +1,4 @@
+import ConnectionManager from "@/components/organisms/ConnectionManager";
 import "@/styles/globals.css";
 import {
   AndroidOutlined,
@@ -69,16 +70,23 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       }
     >
-      <Header style={{ padding: 0, background: colorBgContainer, position: "fixed", width: "100%", height: 60, zIndex: 99, display: "flex", alignItems: "center" }} >
-        <Button onClick={(e) => {
-          e.stopPropagation()
-          setCollapsed(false)
-        }
-        }
-          style={{
-            marginLeft: 10
-          }} icon={<MenuOutlined />} />
-        <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit <AndroidOutlined /> </Title>
+      <Header style={{ padding: 0, background: colorBgContainer, position: "fixed", width: "100%", height: 60, zIndex: 99, display: "flex", alignItems: "center", justifyContent: "space-between" }} >
+        <div>
+
+          <Button onClick={(e) => {
+            e.stopPropagation()
+            setCollapsed(false)
+          }
+          }
+            style={{
+              marginLeft: 10
+            }} icon={<MenuOutlined />} />
+          <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit <AndroidOutlined /> </Title>
+        </div>
+        <ConnectionManager style={{
+          marginRight: 10
+        }} />
+
       </Header>
       <Content style={{ margin: '60px 10px', flexGrow: 1, }}>
         <div
