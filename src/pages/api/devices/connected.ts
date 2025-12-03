@@ -19,7 +19,7 @@ export default function handler(
             return;
         }
         const deviceIps = connectedDevices.split("\n")
-        res.status(200).json({ result: deviceIps.map(line => line.trim().split("\t")[0]); });
+        res.status(200).json({ result: deviceIps.map(line => line.trim().split(":")[0]).filter(ip => ip) });
     } catch (error: any) {
         res.status(500).json({ result: [], errors: [error.message] });
         console.error("Error:", error.message);

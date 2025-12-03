@@ -1,4 +1,5 @@
 import ConnectionManager from "@/components/organisms/ConnectionManager";
+import { useDevicesStore } from "@/state/devices";
 import "@/styles/globals.css";
 import {
   AndroidOutlined,
@@ -6,8 +7,9 @@ import {
   PieChartOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, MenuProps, theme, Typography } from "antd";
+import axios from "axios";
 import type { AppProps } from "next/app";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -40,6 +42,20 @@ const items: MenuItem[] = [
 
 export default function App({ Component, pageProps }: AppProps) {
   const [collapsed, setCollapsed] = useState(true);
+  const { setConnectedDevice, setDevicesLoading } = useDevicesStore()
+
+  function fetchConnectedDevices() {
+    setDevicesLoading(true);
+    axios.get('/api/devices/connected').then(res => {
+      console.log("Connected devices:", res.data.result);
+      setConnectedDevice(res.data.result);
+    }).finally(() => {
+      setDevicesLoading(false);
+    })
+  }
+  useEffect(fetchConnectedDevices, [])
+
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

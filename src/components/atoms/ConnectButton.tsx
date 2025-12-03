@@ -2,6 +2,7 @@ import { useDevicesStore } from "@/state/devices";
 import { deviceIp } from "@/types/adb";
 import { Button, ButtonProps, message, Tooltip } from "antd";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface ConnectButtonProps extends ButtonProps {
     deviceIp: deviceIp;
@@ -18,7 +19,12 @@ async function connect(ip: string) {
 
 export default function ConnectButton({ deviceIp, ...props }: ConnectButtonProps) {
     const { setConnectedDevice, connectedDevices } = useDevicesStore()
-    const isConnected = connectedDevices.includes(deviceIp);
+    const [isConnected, setIsConnected] = useState(connectedDevices.includes(deviceIp))
+    useEffect(() => {
+        console.log("Connected devices updated:", connectedDevices);
+        console.log("Is device connected?", connectedDevices.includes(deviceIp), deviceIp);
+        setIsConnected(connectedDevices.includes(deviceIp))
+    }, [connectedDevices])
     return <Tooltip title={!isConnected && `Connect to device at ${deviceIp}`}>
         <Button  {...props} onClick={(e) => {
             props?.onClick?.(e)

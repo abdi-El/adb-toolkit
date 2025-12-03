@@ -8,7 +8,7 @@ export const useDevicesStore = create<DevicesState>((set) => ({
     connectedDevices: [],
     setConnectedDevice: (device) => set((state) => {
         if (!state.connectedDevices.includes(device)) {
-            return { connectedDevices: [...state.connectedDevices, device] }
+            return { connectedDevices: [...state.connectedDevices, device].flatMap(d => d) }
         }
         return state
     }),
