@@ -5,7 +5,12 @@ import { create } from 'zustand'
 export const useDevicesStore = create<DevicesState>((set) => ({
     devices: [],
     setDevices: (devices) => set({ devices }),
-    connectedDevice: null,
-    setConnectedDevice: (device) => set({ connectedDevice: device }),
+    connectedDevices: [],
+    setConnectedDevice: (device) => set((state) => {
+        if (!state.connectedDevices.includes(device)) {
+            return { connectedDevices: [...state.connectedDevices, device] }
+        }
+        return state
+    }),
 }))
 

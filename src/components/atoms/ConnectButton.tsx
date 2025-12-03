@@ -17,9 +17,9 @@ async function connect(ip: string) {
 }
 
 export default function ConnectButton({ deviceIp, ...props }: ConnectButtonProps) {
-    const { setConnectedDevice, connectedDevice } = useDevicesStore()
-
-    return <Tooltip title={`Connect to device at ${deviceIp}`}>
+    const { setConnectedDevice, connectedDevices } = useDevicesStore()
+    const isConnected = connectedDevices.includes(deviceIp);
+    return <Tooltip title={!isConnected && `Connect to device at ${deviceIp}`}>
         <Button  {...props} onClick={(e) => {
             props?.onClick?.(e)
             message.info(`Connecting to ${deviceIp}...`, 1.5)
@@ -30,9 +30,9 @@ export default function ConnectButton({ deviceIp, ...props }: ConnectButtonProps
                 message.error(err.response?.data?.errors?.[0] || err.message)
             })
         }}
-            disabled={connectedDevice === deviceIp}
+            disabled={isConnected}
         >
-            {connectedDevice === deviceIp ? "Already connected" : "Connect"}
+            {isConnected ? "Already connected" : "Connect"}
         </Button>
     </Tooltip>
 }
