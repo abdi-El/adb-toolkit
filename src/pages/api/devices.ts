@@ -13,7 +13,7 @@ export default function handler(
   try {
     // Fixed: Use double quotes for the outer bash command and single quotes for awk
     const stdout = execSync(
-      `nmap -p 3000 --open 192.168.1.0/24 -oG - | grep "/open/" | awk '{print $2}'`,
+      `nmap -p 5555 --open 192.168.1.0/24 -oG - | grep "/open/" | awk '{print $2}'`,
       { encoding: "utf-8" }
     );
 
