@@ -2,7 +2,6 @@ import ConnectionManager from "@/components/organisms/ConnectionManager";
 import { useDevicesStore } from "@/state/devices";
 import "@/styles/globals.css";
 import {
-  AndroidOutlined,
   MenuOutlined,
   PieChartOutlined
 } from '@ant-design/icons';
@@ -97,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
             style={{
               marginLeft: 10
             }} icon={<MenuOutlined />} />
-          <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit <AndroidOutlined /> </Title>
+          <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit </Title>
         </div>
         <ConnectionManager style={{
           marginRight: 10
