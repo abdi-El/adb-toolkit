@@ -14,8 +14,8 @@ export default function handler(
 ) {
   try {
     const stdout = execCommand(`nmap -p 5555 --open 192.168.1.0/24 -oG - | grep "/open/" | awk '{print $2}'`,);
-    const connctedStdout = execCommand("adb devices");
-    const connectedDevices = connctedStdout.split("List of devices attached")[1]
+    const connectedStdout = execCommand("adb devices");
+    const connectedDevices = connectedStdout.split("List of devices attached")[1]
 
     res.status(200).json({
       devices: stdout.split("\n").filter(line => line.trim() !== ""),
