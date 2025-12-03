@@ -1,9 +1,9 @@
-import { Button } from 'antd';
+import DeviceStats from "@/components/atoms/DeviceStats";
 
-const Home = () => {
-  return <div className="App">
-    <Button type="primary" >Button</Button>
-  </div>
-};
-
-export default Home;
+export default function HomePage() {
+  return (
+    <div>
+      <DeviceStats />
+    </div>
+  );
+}
