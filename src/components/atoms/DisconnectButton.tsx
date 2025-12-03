@@ -1,3 +1,4 @@
+import { useDevicesStore } from "@/state/devices";
 import { deviceIp } from "@/types/adb";
 import { Button, ButtonProps, message, Tooltip } from "antd";
 import axios from "axios";
@@ -6,15 +7,19 @@ interface DisconnectButtonProps extends ButtonProps {
     deviceIp: deviceIp;
 }
 
-async function diconnect(ip: string) {
-    return axios.post('/api/devices/disconnect', null, {
-        params: {
-            ip
-        }
-    })
-}
 
 export default function DisconnectButton({ deviceIp, ...props }: DisconnectButtonProps) {
+    const { removeConnectedDevice } = useDevicesStore()
+    async function diconnect(ip: string) {
+        return axios.post('/api/disconnect', null, {
+            params: {
+                ip
+            }
+        }).then(res => {
+            removeConnectedDevice(ip);
+            return res;
+        })
+    }
     return <Tooltip title={`Diconnect from device at ${deviceIp}`}>
         <Button  {...props} onClick={(e) => {
             props?.onClick?.(e)

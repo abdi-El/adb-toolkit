@@ -11,12 +11,13 @@ interface DevicesModalProps extends ModalProps { }
 
 
 export default function DevicesModal(props: DevicesModalProps) {
-    const { devices, setDevices, setDevicesLoading, devicesLoading } = useDevicesStore()
+    const { devices, setDevices, setDevicesLoading, devicesLoading, setConnectedDevice } = useDevicesStore()
 
     function fetchDevices() {
         setDevicesLoading(true);
         axios.get('/api/devices').then(res => {
             setDevices(res.data.devices);
+            setConnectedDevice(res.data.connecredDevices);
         }).finally(() => {
             setDevicesLoading(false);
         })

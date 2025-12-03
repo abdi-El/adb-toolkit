@@ -13,7 +13,7 @@ export default function handler(
 ) {
     try {
         const ip = req.query.ip as string;
-        const stdout = execCommand(`adb diconnect ${ip}`,);
+        const stdout = execCommand(`adb disconnect ${ip}`,);
         res.status(200).json({ errors: [], result: stdout });
     } catch (error: any) {
         res.status(500).json({ errors: [error.message] });

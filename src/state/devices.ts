@@ -14,5 +14,8 @@ export const useDevicesStore = create<DevicesState>((set) => ({
     }),
     devicesLoading: false,
     setDevicesLoading: (loading) => set({ devicesLoading: loading }),
+    removeConnectedDevice: (device) => set((state) => ({
+        connectedDevices: state.connectedDevices.filter(d => d !== device)
+    })),
 }))
 
