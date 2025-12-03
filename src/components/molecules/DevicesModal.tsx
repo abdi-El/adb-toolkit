@@ -4,6 +4,7 @@ import { Button, List, Modal, ModalProps, Row } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import ConnectButton from "../atoms/ConnectButton";
+import DisconnectButton from "../atoms/DisconnectButton";
 
 interface DevicesModalProps extends ModalProps { }
 
@@ -41,6 +42,7 @@ export default function DevicesModal(props: DevicesModalProps) {
                 <Row justify={"space-between"} align={"middle"} style={{ width: "100%" }}>
                     <span>{item}</span>
                     <ConnectButton deviceIp={item} />
+                    <DisconnectButton deviceIp={item} />
                 </Row>
             </List.Item>}
         />

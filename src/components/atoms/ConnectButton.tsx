@@ -21,8 +21,6 @@ export default function ConnectButton({ deviceIp, ...props }: ConnectButtonProps
     const { setConnectedDevice, connectedDevices } = useDevicesStore()
     const [isConnected, setIsConnected] = useState(connectedDevices.includes(deviceIp))
     useEffect(() => {
-        console.log("Connected devices updated:", connectedDevices);
-        console.log("Is device connected?", connectedDevices.includes(deviceIp), deviceIp);
         setIsConnected(connectedDevices.includes(deviceIp))
     }, [connectedDevices])
     return <Tooltip title={!isConnected && `Connect to device at ${deviceIp}`}>

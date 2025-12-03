@@ -42,13 +42,13 @@ const items: MenuItem[] = [
 
 export default function App({ Component, pageProps }: AppProps) {
   const [collapsed, setCollapsed] = useState(true);
-  const { setConnectedDevice, setDevicesLoading } = useDevicesStore()
+  const { setConnectedDevice, setDevicesLoading, setDevices } = useDevicesStore()
 
   function fetchConnectedDevices() {
     setDevicesLoading(true);
-    axios.get('/api/devices/connected').then(res => {
-      console.log("Connected devices:", res.data.result);
-      setConnectedDevice(res.data.result);
+    axios.get('/api/devices').then(res => {
+      setConnectedDevice(res.data.connecredDevices);
+      setDevices(res.data.devices);
     }).finally(() => {
       setDevicesLoading(false);
     })
