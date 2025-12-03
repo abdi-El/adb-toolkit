@@ -5,7 +5,10 @@ interface DevicesModalProps extends ModalProps {
     devices: string[];
 }
 
+
+
 export default function DevicesModal({ devices, ...props }: DevicesModalProps) {
+
     return <Modal {...props} title="Devices Found" footer={null}>
         <List
             size="small"
