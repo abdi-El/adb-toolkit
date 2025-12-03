@@ -6,8 +6,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> { }
 
 export default function ConnectionManager(props: Props) {
     const [open, setOpen] = useState(false);
-
-    const [loading, setLoading] = useState(false)
     function closeModal() {
         setOpen(false);
     }
@@ -16,8 +14,7 @@ export default function ConnectionManager(props: Props) {
             onClick={() => {
                 setOpen(true)
             }}
-            loading={loading}
         />
-        <DevicesModal loading={loading} open={open} onCancel={closeModal} onOk={closeModal} />
+        <DevicesModal open={open} onCancel={closeModal} onOk={closeModal} />
     </div>
 }
