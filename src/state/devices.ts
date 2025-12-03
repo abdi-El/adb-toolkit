@@ -12,5 +12,7 @@ export const useDevicesStore = create<DevicesState>((set) => ({
         }
         return state
     }),
+    devicesLoading: false,
+    setDevicesLoading: (loading) => set({ devicesLoading: loading }),
 }))
 

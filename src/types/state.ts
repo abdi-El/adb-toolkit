@@ -5,4 +5,6 @@ export interface DevicesState {
     setDevices: (devices: deviceIp[]) => void
     connectedDevices: deviceIp[]
     setConnectedDevice: (device: deviceIp) => void
+    devicesLoading: boolean
+    setDevicesLoading: (loading: boolean) => void
 }

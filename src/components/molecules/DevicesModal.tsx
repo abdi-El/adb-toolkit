@@ -2,7 +2,7 @@ import { useDevicesStore } from "@/state/devices";
 import { ReloadOutlined } from "@ant-design/icons";
 import { Button, List, Modal, ModalProps, Row } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ConnectButton from "../atoms/ConnectButton";
 
 interface DevicesModalProps extends ModalProps { }
@@ -10,15 +10,14 @@ interface DevicesModalProps extends ModalProps { }
 
 
 export default function DevicesModal(props: DevicesModalProps) {
-    const { devices, setDevices } = useDevicesStore()
-    const [loading, setLoading] = useState(false);
+    const { devices, setDevices, setDevicesLoading, devicesLoading } = useDevicesStore()
 
     function fetchDevices() {
-        setLoading(true);
+        setDevicesLoading(true);
         axios.get('/api/devices').then(res => {
             setDevices(res.data.devices);
         }).finally(() => {
-            setLoading(false);
+            setDevicesLoading(false);
         })
     }
 
@@ -32,9 +31,9 @@ export default function DevicesModal(props: DevicesModalProps) {
         <List
             header={<Row justify="space-between" align="middle">
                 <span>Available Devices</span>
-                <Button icon={<ReloadOutlined />} onClick={fetchDevices} disabled={loading} />
+                <Button icon={<ReloadOutlined />} onClick={fetchDevices} disabled={devicesLoading} />
             </Row>}
-            loading={loading}
+            loading={devicesLoading}
             size="small"
             bordered
             dataSource={devices}
