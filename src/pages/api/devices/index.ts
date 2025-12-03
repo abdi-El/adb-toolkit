@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { execSync } from "child_process";
+import { execCommand } from "@/lib/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -11,12 +11,7 @@ export default function handler(
   res: NextApiResponse<Data>,
 ) {
   try {
-    // Fixed: Use double quotes for the outer bash command and single quotes for awk
-    const stdout = execSync(
-      `nmap -p 5555 --open 192.168.1.0/24 -oG - | grep "/open/" | awk '{print $2}'`,
-      { encoding: "utf-8" }
-    );
-
+    const stdout = execCommand(`nmap -p 5555 --open 192.168.1.0/24 -oG - | grep "/open/" | awk '{print $2}'`,);
     res.status(200).json({
       devices: stdout.split("\n").filter(line => line.trim() !== "")
     });

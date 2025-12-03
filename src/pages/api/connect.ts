@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { execSync } from "child_process";
+import { execCommand } from "@/lib/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -17,10 +17,7 @@ export default function handler(
             res.status(400).json({ errors: ["IP address is required"] });
             return;
         }
-        const stdout = execSync(
-            `adb connect ${ip}:5555`,
-            { encoding: "utf-8" }
-        );
+        const stdout = execCommand(`adb connect ${ip}:5555`,);
 
         if (stdout.includes("failed")) {
             res.status(500).json({ errors: [stdout] });
