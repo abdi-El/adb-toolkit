@@ -96,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
             style={{
               marginLeft: 10
             }} icon={<MenuOutlined />} />
-          <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit </Title>
+          <Title level={3} style={{ display: "inline-block", margin: "0 0 0 10px" }}>Adb Toolkit</Title>
         </div>
         <ConnectionManager style={{
           marginRight: 10
