@@ -1,50 +1,140 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useState, useMemo } from "react";
+import {
+  AppShell,
+  NavLink,
+  Title,
+  Group,
+  MantineProvider,
+  DirectionProvider,
+  createTheme,
+} from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
+import { useTranslation } from "react-i18next";
+import {
+  IconPlug,
+  IconApps,
+  IconSettings,
+  IconDeviceGamepad,
+  IconInfoCircle,
+  IconCamera,
+  IconFolder,
+  IconTerminal,
+  IconFileText,
+} from "@tabler/icons-react";
+import { ConnectionsPage } from "./pages/ConnectionsPage";
+import { AppsPage } from "./pages/AppsPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { RemoteControlPage } from "./pages/RemoteControlPage";
+import { DeviceInfoPage } from "./pages/DeviceInfoPage";
+import { ScreenshotPage } from "./pages/ScreenshotPage";
+import { FileManagerPage } from "./pages/FileManagerPage";
+import { ShellPage } from "./pages/ShellPage";
+import { LogcatPage } from "./pages/LogcatPage";
+import { useSettings } from "./hooks/useSettings";
+
+type Section =
+  | "connections"
+  | "remote"
+  | "apps"
+  | "files"
+  | "screenshot"
+  | "shell"
+  | "logcat"
+  | "deviceInfo"
+  | "settings";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const { t } = useTranslation();
+  const {
+    language,
+    colorScheme,
+    accentColor,
+    setLanguage,
+    setColorScheme,
+    setAccentColor,
+  } = useSettings();
+  const [active, setActive] = useState<Section>("connections");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const dir = language === "ar" ? "rtl" : "ltr";
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        primaryColor: accentColor,
+        defaultRadius: "md",
+      }),
+    [accentColor],
+  );
+
+  const sections: {
+    key: Section;
+    label: string;
+    icon: typeof IconPlug;
+  }[] = [
+    { key: "connections", label: t("nav.connections"), icon: IconPlug },
+    { key: "remote", label: t("nav.remote"), icon: IconDeviceGamepad },
+    { key: "apps", label: t("nav.apps"), icon: IconApps },
+    { key: "files", label: t("nav.files"), icon: IconFolder },
+    { key: "screenshot", label: t("nav.screenshot"), icon: IconCamera },
+    { key: "shell", label: t("nav.shell"), icon: IconTerminal },
+    { key: "logcat", label: t("nav.logcat"), icon: IconFileText },
+    { key: "deviceInfo", label: t("nav.deviceInfo"), icon: IconInfoCircle },
+    { key: "settings", label: t("nav.settings"), icon: IconSettings },
+  ];
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
+    <DirectionProvider initialDirection={dir}>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme={colorScheme}
+        forceColorScheme={colorScheme === "dark" ? "dark" : "light"}
       >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+        <ModalsProvider>
+        <Notifications position="top-right" />
+        <AppShell navbar={{ width: 220, breakpoint: 0 }} padding="md">
+          <AppShell.Navbar p="xs">
+            <AppShell.Section>
+              <Group px="xs" py="md">
+                <Title order={4}>ADB Toolkit</Title>
+              </Group>
+            </AppShell.Section>
+            <AppShell.Section grow>
+              {sections.map((section) => (
+                <NavLink
+                  key={section.key}
+                  label={section.label}
+                  leftSection={<section.icon size={18} />}
+                  active={active === section.key}
+                  onClick={() => setActive(section.key)}
+                />
+              ))}
+            </AppShell.Section>
+          </AppShell.Navbar>
+          <AppShell.Main>
+            {active === "connections" && <ConnectionsPage />}
+            {active === "remote" && <RemoteControlPage />}
+            {active === "apps" && <AppsPage />}
+            {active === "files" && <FileManagerPage />}
+            {active === "screenshot" && <ScreenshotPage />}
+            {active === "shell" && <ShellPage />}
+            {active === "logcat" && <LogcatPage />}
+            {active === "deviceInfo" && <DeviceInfoPage />}
+            {active === "settings" && (
+              <SettingsPage
+                language={language}
+                colorScheme={colorScheme}
+                accentColor={accentColor}
+                onLanguageChange={setLanguage}
+                onColorSchemeChange={setColorScheme}
+                onAccentColorChange={setAccentColor}
+              />
+            )}
+          </AppShell.Main>
+        </AppShell>
+        </ModalsProvider>
+      </MantineProvider>
+    </DirectionProvider>
   );
 }
 
