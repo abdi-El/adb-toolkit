@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ADB sidecar binaries
+src-tauri/binaries/
