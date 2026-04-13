@@ -8,7 +8,9 @@ import {
   ColorSwatch,
   Text,
   UnstyledButton,
+  Button,
 } from "@mantine/core";
+import { IconHelpCircle } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import {
   ACCENT_COLORS,
@@ -24,6 +26,7 @@ interface Props {
   onLanguageChange: (lang: string) => void;
   onColorSchemeChange: (scheme: MantineColorScheme) => void;
   onAccentColorChange: (color: AccentColor) => void;
+  onShowTutorial: () => void;
 }
 
 const SWATCH_COLORS: Record<AccentColor, string> = {
@@ -48,6 +51,7 @@ export function SettingsPage({
   onLanguageChange,
   onColorSchemeChange,
   onAccentColorChange,
+  onShowTutorial,
 }: Props) {
   const { t } = useTranslation();
 
@@ -107,6 +111,19 @@ export function SettingsPage({
                 </UnstyledButton>
               ))}
             </Group>
+          </div>
+
+          <div>
+            <Text size="sm" fw={500} mb={8}>
+              {t("settings.tutorial")}
+            </Text>
+            <Button
+              variant="default"
+              leftSection={<IconHelpCircle size={16} />}
+              onClick={onShowTutorial}
+            >
+              {t("settings.showTutorial")}
+            </Button>
           </div>
         </Stack>
       </Paper>

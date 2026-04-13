@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { MantineColorScheme } from "@mantine/core";
+import { settingsStore, KEYS } from "../lib/store";
 
 export type AccentColor =
   | "teal"
@@ -38,36 +39,48 @@ export const LANGUAGES = [
   { value: "ar", label: "العربية" },
 ];
 
-function loadSetting<T>(key: string, fallback: T): T {
-  const val = localStorage.getItem(key);
-  return val !== null ? (val as T) : fallback;
-}
-
 export function useSettings() {
   const { i18n } = useTranslation();
 
-  const [colorScheme, setColorSchemeState] = useState<MantineColorScheme>(
-    loadSetting<MantineColorScheme>("colorScheme", "dark"),
-  );
-  const [accentColor, setAccentColorState] = useState<AccentColor>(
-    loadSetting<AccentColor>("accentColor", "teal"),
-  );
+  const [colorScheme, setColorSchemeState] =
+    useState<MantineColorScheme>("dark");
+  const [accentColor, setAccentColorState] = useState<AccentColor>("teal");
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [scheme, color, lang] = await Promise.all([
+        settingsStore.get<MantineColorScheme>(KEYS.colorScheme),
+        settingsStore.get<AccentColor>(KEYS.accentColor),
+        settingsStore.get<string>(KEYS.language),
+      ]);
+      if (cancelled) return;
+      if (scheme) setColorSchemeState(scheme);
+      if (color) setAccentColorState(color);
+      if (lang && lang !== i18n.language) i18n.changeLanguage(lang);
+      setLoaded(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [i18n]);
 
   const setLanguage = useCallback(
     (lang: string) => {
-      localStorage.setItem("language", lang);
+      void settingsStore.set(KEYS.language, lang);
       i18n.changeLanguage(lang);
     },
     [i18n],
   );
 
   const setColorScheme = useCallback((scheme: MantineColorScheme) => {
-    localStorage.setItem("colorScheme", scheme);
+    void settingsStore.set(KEYS.colorScheme, scheme);
     setColorSchemeState(scheme);
   }, []);
 
   const setAccentColor = useCallback((color: AccentColor) => {
-    localStorage.setItem("accentColor", color);
+    void settingsStore.set(KEYS.accentColor, color);
     setAccentColorState(color);
   }, []);
 
@@ -75,6 +88,7 @@ export function useSettings() {
     language: i18n.language,
     colorScheme,
     accentColor,
+    loaded,
     setLanguage,
     setColorScheme,
     setAccentColor,

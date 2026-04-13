@@ -5,8 +5,6 @@ import it from "./it";
 import es from "./es";
 import ar from "./ar";
 
-const savedLang = localStorage.getItem("language") || "en";
-
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
@@ -14,7 +12,7 @@ i18n.use(initReactI18next).init({
     es: { translation: es },
     ar: { translation: ar },
   },
-  lng: savedLang,
+  lng: "en",
   fallbackLng: "en",
   interpolation: { escapeValue: false },
 });

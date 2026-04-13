@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   AppShell,
   NavLink,
@@ -31,7 +31,9 @@ import { ScreenshotPage } from "./pages/ScreenshotPage";
 import { FileManagerPage } from "./pages/FileManagerPage";
 import { ShellPage } from "./pages/ShellPage";
 import { LogcatPage } from "./pages/LogcatPage";
+import { OnboardingModal } from "./components/OnboardingModal";
 import { useSettings } from "./hooks/useSettings";
+import { settingsStore, KEYS } from "./lib/store";
 
 type Section =
   | "connections"
@@ -55,6 +57,32 @@ function App() {
     setAccentColor,
   } = useSettings();
   const [active, setActive] = useState<Section>("connections");
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingShowSetup, setOnboardingShowSetup] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const seen = await settingsStore.get<boolean>(KEYS.onboardingSeen);
+      if (!cancelled && !seen) {
+        setOnboardingShowSetup(true);
+        setOnboardingOpen(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const closeOnboarding = () => {
+    void settingsStore.set(KEYS.onboardingSeen, true);
+    setOnboardingOpen(false);
+  };
+
+  const openOnboarding = () => {
+    setOnboardingShowSetup(false);
+    setOnboardingOpen(true);
+  };
 
   const dir = language === "ar" ? "rtl" : "ltr";
 
@@ -128,10 +156,22 @@ function App() {
                 onLanguageChange={setLanguage}
                 onColorSchemeChange={setColorScheme}
                 onAccentColorChange={setAccentColor}
+                onShowTutorial={openOnboarding}
               />
             )}
           </AppShell.Main>
         </AppShell>
+        <OnboardingModal
+          opened={onboardingOpen}
+          onClose={closeOnboarding}
+          showSetup={onboardingShowSetup}
+          language={language}
+          colorScheme={colorScheme}
+          accentColor={accentColor}
+          onLanguageChange={setLanguage}
+          onColorSchemeChange={setColorScheme}
+          onAccentColorChange={setAccentColor}
+        />
         </ModalsProvider>
       </MantineProvider>
     </DirectionProvider>
