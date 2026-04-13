@@ -8,11 +8,11 @@
     "opener:default",
     {
       "identifier": "shell:allow-execute",
-      "allow": [{ "name": "adb", "sidecar": true }]
+      "allow": [{ "name": "adb-toolkit-adb", "sidecar": true }]
     },
     {
       "identifier": "shell:allow-spawn",
-      "allow": [{ "name": "adb", "sidecar": true }]
+      "allow": [{ "name": "adb-toolkit-adb", "sidecar": true }]
     },
     "shell:allow-stdin-write",
     "shell:allow-kill",

@@ -37,7 +37,7 @@ If you already have ADB installed locally, you can copy it manually:
 
 ```bash
 mkdir -p src-tauri/binaries
-cp $(which adb) src-tauri/binaries/adb-x86_64-unknown-linux-gnu
+cp $(which adb) src-tauri/binaries/adb-toolkit-adb-x86_64-unknown-linux-gnu
 ```
 
 ## Development

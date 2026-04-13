@@ -39,8 +39,8 @@ fetch-adb-linux:
 	curl -L -o /tmp/platform-tools-linux.zip \
 		https://dl.google.com/android/repository/platform-tools-latest-linux.zip
 	unzip -o /tmp/platform-tools-linux.zip platform-tools/adb -d /tmp
-	cp /tmp/platform-tools/adb src-tauri/binaries/adb-x86_64-unknown-linux-gnu
-	chmod +x src-tauri/binaries/adb-x86_64-unknown-linux-gnu
+	cp /tmp/platform-tools/adb src-tauri/binaries/adb-toolkit-adb-x86_64-unknown-linux-gnu
+	chmod +x src-tauri/binaries/adb-toolkit-adb-x86_64-unknown-linux-gnu
 	rm -rf /tmp/platform-tools /tmp/platform-tools-linux.zip
 	@echo "ADB Linux binary ready"
 
@@ -49,7 +49,7 @@ fetch-adb-windows:
 	curl -L -o /tmp/platform-tools-windows.zip \
 		https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 	unzip -o /tmp/platform-tools-windows.zip platform-tools/adb.exe platform-tools/AdbWinApi.dll platform-tools/AdbWinUsbApi.dll -d /tmp
-	cp /tmp/platform-tools/adb.exe src-tauri/binaries/adb-x86_64-pc-windows-msvc.exe
+	cp /tmp/platform-tools/adb.exe src-tauri/binaries/adb-toolkit-adb-x86_64-pc-windows-msvc.exe
 	cp /tmp/platform-tools/AdbWinApi.dll src-tauri/binaries/
 	cp /tmp/platform-tools/AdbWinUsbApi.dll src-tauri/binaries/
 	rm -rf /tmp/platform-tools /tmp/platform-tools-windows.zip
