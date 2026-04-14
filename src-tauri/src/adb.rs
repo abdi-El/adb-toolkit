@@ -49,7 +49,7 @@ pub struct FileEntry {
 async fn run_adb(app: &tauri::AppHandle, args: &[&str]) -> Result<(String, String), String> {
     let output = app
         .shell()
-        .sidecar("adb")
+        .sidecar("adb-toolkit-adb")
         .map_err(|e| e.to_string())?
         .args(args)
         .output()

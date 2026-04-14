@@ -72,7 +72,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path src-tauri/binaries | Out-Null
           Invoke-WebRequest -Uri "https://dl.google.com/android/repository/platform-tools-latest-windows.zip" -OutFile "$env:TEMP\platform-tools-windows.zip"
           Expand-Archive -Path "$env:TEMP\platform-tools-windows.zip" -DestinationPath "$env:TEMP\pt" -Force
-          Copy-Item "$env:TEMP\pt\platform-tools\adb.exe" "src-tauri/binaries/adb-x86_64-pc-windows-msvc.exe"
+          Copy-Item "$env:TEMP\pt\platform-tools\adb.exe" "src-tauri/binaries/adb-toolkit-adb-x86_64-pc-windows-msvc.exe"
           Copy-Item "$env:TEMP\pt\platform-tools\AdbWinApi.dll" "src-tauri/binaries/"
           Copy-Item "$env:TEMP\pt\platform-tools\AdbWinUsbApi.dll" "src-tauri/binaries/"
           Remove-Item -Recurse -Force "$env:TEMP\pt","$env:TEMP\platform-tools-windows.zip"
